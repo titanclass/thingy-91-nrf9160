@@ -1,0 +1,20 @@
+[package]
+authors = [
+   "Christopher Hunt <huntchr@gmail.com>",
+]
+categories = ["embedded", "no-std"]
+description = "BSP for the Nordic Thingy:91 nRF9160"
+keywords = ["arm", "nrf9160"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+name = "thingy-91-nrf9160-bsp"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+nrf9160-hal = "0.12.1"
+
+[dev-dependencies]
+cortex-m-rt = "0.6.13"
+nb = "1.0.0"
+panic-semihosting = "0.5.6"
