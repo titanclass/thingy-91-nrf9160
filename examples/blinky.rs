@@ -7,23 +7,25 @@ extern crate panic_semihosting;
 extern crate thingy_91_nrf9160_bsp as bsp;
 
 use bsp::{hal::Timer, prelude::*, Board};
-use core::fmt::Write;
+// use core::fmt::Write;
 use nb::block;
 use rt::entry;
 
 #[entry]
 fn main() -> ! {
-    let mut board = Board::take().unwrap();
+    let board = Board::take().unwrap();
     let mut timer = Timer::new(board.TIMER0_NS);
 
     // writeln!(board.cdc_uart, "Hello, world!").unwrap();
 
+    board.leds.rgb_led_1.pwm.set_period(500u32.hz());
+
     let mut led_is_on = false;
     loop {
         if led_is_on {
-            board.leds.led_1.disable();
+            board.leds.rgb_led_1.pwm.disable();
         } else {
-            board.leds.led_1.enable();
+            board.leds.rgb_led_1.pwm.enable();
         }
         timer.start(1_000_000_u32);
         block!(timer.wait()).unwrap();

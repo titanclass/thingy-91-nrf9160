@@ -12,11 +12,12 @@ pub mod prelude {
 
 use hal::{
     gpio::{p0, Disconnected, Input, Level, Output, Pin, PullUp, PushPull},
-    pac::{CorePeripherals, Peripherals},
+    pac::{CorePeripherals, Peripherals, PWM0_NS},
+    pwm::{self, Pwm, PwmEvent},
     uarte::{self, Baudrate as UartBaudrate, Parity as UartParity, Uarte},
 };
 
-use hal::prelude::{InputPin, OutputPin};
+use hal::prelude::InputPin;
 
 pub use hal::pac;
 
@@ -30,7 +31,7 @@ pub struct Board {
     pub cdc_uart: Uarte<pac::UARTE0_NS>,
 
     /// The LEDs on the Thingy:91 board
-    pub leds: Leds,
+    pub leds: Leds<PWM0_NS>,
 
     /// The buttons on the Thingy:91 board
     pub buttons: Buttons,
@@ -119,9 +120,10 @@ pub struct Board {
     /// nRF9160 Non-secure peripheral: Power control 0
     pub POWER_NS: pac::POWER_NS,
 
-    /// nRF9160 Non-secure peripheral: Pulse width modulation unit 0
-    pub PWM0_NS: pac::PWM0_NS,
-
+    // nRF9160 Non-secure peripheral: Pulse width modulation unit 0
+    // Used by the RGB LED
+    // pub PWM0_NS: pac::PWM0_NS,
+    //
     /// nRF9160 Non-secure peripheral: Pulse width modulation unit 1
     pub PWM1_NS: pac::PWM1_NS,
 
@@ -466,9 +468,12 @@ impl Board {
             },
 
             leds: Leds {
-                led_1: Led::new(pins0.p0_29.degrade()),
-                led_2: Led::new(pins0.p0_30.degrade()),
-                led_3: Led::new(pins0.p0_31.degrade()),
+                rgb_led_1: RgbLed::new(
+                    Pwm::new(p.PWM0_NS),
+                    pins0.p0_29.into_push_pull_output(Level::Low).degrade(),
+                    pins0.p0_30.into_push_pull_output(Level::Low).degrade(),
+                    pins0.p0_31.into_push_pull_output(Level::Low).degrade(),
+                ),
             },
 
             buttons: Buttons {
@@ -506,7 +511,7 @@ impl Board {
             NVMC_NS: p.NVMC_NS,
             PDM_NS: p.PDM_NS,
             POWER_NS: p.POWER_NS,
-            PWM0_NS: p.PWM0_NS,
+            // PWM0_NS: p.PWM0_NS,
             PWM1_NS: p.PWM1_NS,
             PWM2_NS: p.PWM2_NS,
             PWM3_NS: p.PWM3_NS,
@@ -580,33 +585,35 @@ pub struct Pins {
 }
 
 /// The LEDs on the Thingy:91 board
-pub struct Leds {
-    /// Thingy:91: LIGHTWELL_RED, nRF9160: P0.29
-    pub led_1: Led,
-
-    /// Thingy:91: LIGHTWELL_GREEN, nRF9160: P0.30
-    pub led_2: Led,
-
-    /// Thingy:91: LIGHTWELL_BLUE, nRF9160: P0.31
-    pub led_3: Led,
+pub struct Leds<T>
+where
+    T: pwm::Instance,
+{
+    pub rgb_led_1: RgbLed<T>,
 }
 
-/// An LED on the Thingy:91 board
-pub struct Led(Pin<Output<PushPull>>);
+pub struct RgbLed<T>
+where
+    T: pwm::Instance,
+{
+    pub pwm: Pwm<T>,
+}
 
-impl Led {
-    fn new<Mode>(pin: Pin<Mode>) -> Self {
-        Led(pin.into_push_pull_output(Level::Low))
-    }
-
-    /// Enable the LED
-    pub fn enable(&mut self) {
-        self.0.set_high().unwrap()
-    }
-
-    /// Disable the LED
-    pub fn disable(&mut self) {
-        self.0.set_low().unwrap()
+impl<T> RgbLed<T>
+where
+    T: pwm::Instance,
+{
+    pub fn new(
+        pwm: Pwm<T>,
+        lightwell_red_pin: Pin<Output<PushPull>>,
+        lightwell_green_pin: Pin<Output<PushPull>>,
+        lightwell_blue_pin: Pin<Output<PushPull>>,
+    ) -> RgbLed<T> {
+        pwm.set_output_pin(pwm::Channel::C0, &lightwell_red_pin)
+            .set_output_pin(pwm::Channel::C1, &lightwell_green_pin)
+            .set_output_pin(pwm::Channel::C2, &lightwell_blue_pin)
+            .enable_interrupt(PwmEvent::Stopped);
+        RgbLed { pwm }
     }
 }
 
