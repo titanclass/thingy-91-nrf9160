@@ -13,7 +13,7 @@ pub mod prelude {
 use hal::{
     gpio::{p0, Disconnected, Input, Level, Output, Pin, PullUp, PushPull},
     pac::{CorePeripherals, Peripherals, PWM0_NS},
-    pwm::{self, Pwm, PwmEvent},
+    pwm::{self, Pwm},
     uarte::{self, Baudrate as UartBaudrate, Parity as UartParity, Uarte},
 };
 
@@ -470,9 +470,9 @@ impl Board {
             leds: Leds {
                 rgb_led_1: RgbLed::new(
                     Pwm::new(p.PWM0_NS),
-                    pins0.p0_29.into_push_pull_output(Level::Low).degrade(),
-                    pins0.p0_30.into_push_pull_output(Level::Low).degrade(),
-                    pins0.p0_31.into_push_pull_output(Level::Low).degrade(),
+                    pins0.p0_29.into_push_pull_output(Level::High).degrade(),
+                    pins0.p0_30.into_push_pull_output(Level::High).degrade(),
+                    pins0.p0_31.into_push_pull_output(Level::High).degrade(),
                 ),
             },
 
@@ -611,8 +611,7 @@ where
     ) -> RgbLed<T> {
         pwm.set_output_pin(pwm::Channel::C0, &lightwell_red_pin)
             .set_output_pin(pwm::Channel::C1, &lightwell_green_pin)
-            .set_output_pin(pwm::Channel::C2, &lightwell_blue_pin)
-            .enable_interrupt(PwmEvent::Stopped);
+            .set_output_pin(pwm::Channel::C2, &lightwell_blue_pin);
         RgbLed { pwm }
     }
 }
