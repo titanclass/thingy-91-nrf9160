@@ -13,7 +13,7 @@ of the examples:
 $ rustup target add thumbv8m.main-none-eabihf
 $ git clone https://github.com/titanclass/thingy-91-nrf9160.git
 $ cd thingy-91-nrf9160
-$ cargo objcopy --target=thumbv8m.main-none-eabihf --example blinky -- -O ihex target/thumbv8m.main-none-eabihf/debug/examples/blinky.hex
+$ cargo objcopy --example blinky -- -O ihex target/thumbv8m.main-none-eabihf/debug/examples/blinky.hex
 ```
 
 Note that the nRF9160 has trusted execution and so you will need to compliment the above example and your own applications with a 
