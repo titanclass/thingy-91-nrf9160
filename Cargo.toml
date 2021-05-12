@@ -18,3 +18,4 @@ nrf9160-hal = { git = "https://github.com/huntc/nrf-hal", branch = "enable-pwm" 
 cortex-m-rt = "0.6.13"
 nb = "1.0.0"
 panic-semihosting = "0.5.6"
+rtt-target = {version = "0.2.0", features = ["cortex-m"] }
