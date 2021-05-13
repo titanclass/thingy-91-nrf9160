@@ -31,7 +31,7 @@ fn main() -> ! {
         if led_is_on {
             rgb_pwm.set_duty_on_common(0);
         } else {
-            rgb_pwm.set_duty_on_common(rgb_pwm.get_max_duty() >> 2);
+            rgb_pwm.set_duty_on_common(rgb_pwm.get_max_duty());
         }
         timer.start(1_000_000_u32);
         block!(timer.wait()).unwrap();
