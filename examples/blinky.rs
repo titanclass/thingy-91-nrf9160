@@ -7,6 +7,7 @@ extern crate panic_semihosting;
 extern crate thingy_91_nrf9160_bsp as bsp;
 
 use bsp::{hal::Timer, prelude::*, Board};
+use core::fmt::Write;
 use nb::block;
 
 use rtt_target::{rprintln, rtt_init_print};
@@ -17,10 +18,12 @@ use rt::entry;
 fn main() -> ! {
     rtt_init_print!();
 
-    let board = Board::take().unwrap();
+    let mut board = Board::take().unwrap();
     let mut timer = Timer::new(board.TIMER0_NS);
 
-    rprintln!("Hello, world!");
+    rprintln!("Writing"); // FIXME: I'll probably remove RTT from this once I get CDC UART working
+    writeln!(board.cdc_uart, "Hello, world!").unwrap();
+    rprintln!("Written");
 
     let rgb_pwm = board.leds.rgb_led_1.pwm;
 
