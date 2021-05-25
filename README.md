@@ -1,6 +1,6 @@
-# Board Support Package for the Nordic nRF9160-DK
+# Board Support Package for the Nordic Thingy:91-nRF9160
 
-> This board was initially cloned from [Nordic nRF9160-DK](https://github.com/nrf-rs/nrf9160-dk)
+> This board support package was initially cloned from [Nordic nRF9160-DK](https://github.com/nrf-rs/nrf9160-dk)
 > and is expected to continue to be inspired by it. Thanks to [42 Technology](https://www.42technology.com/) 
 > for their past and future work.
 
