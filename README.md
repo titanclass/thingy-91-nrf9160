@@ -120,7 +120,7 @@ your application.
 We have succesfully used Nordic's [Secure Partition
 Manager](https://github.com/nrfconnect/sdk-nrf/tree/master/samples/spm) from nRF
 SDK v1.5.1. SPM v1.5.1 is configured to expect your application at address
-`0x0005_0000` and so that is what `memory.x` must specify as the start of Flash.
+`0x0004_0000` for the thingy91_nrf9160 board, and so that is what `memory.x` must specify as the start of Flash.
 Note that other version of SPM might specify a different start address!
 
 ```console
@@ -128,7 +128,7 @@ $ west init -m https://github.com/nrfconnect/sdk-nrf --mr v1.5.1 ncs
 $ cd ncs
 $ west update # This takes *ages*
 $ cd nrf/examples/spm
-$ west build --board=nrf9160dk_nrf9160 # Yes, this will work for the Thingy:91 too!
+$ west build --board=thingy91_nrf9160
 $ west flash
 ```
 
