@@ -10,12 +10,12 @@ readme = "README.md"
 name = "thingy-91-nrf9160-bsp"
 version = "0.1.0"
 edition = "2018"
+resolver = "2"
 
 [dependencies]
-nrf9160-hal = { git = "https://github.com/huntc/nrf-hal", branch = "enable-pwm" }
+nrf9160-hal = { git = "https://github.com/nrf-rs/nrf-hal", branch = "master" }
 
 [dev-dependencies]
-cortex-m-rt = "0.6.13"
+cortex-m = "0.7"
+cortex-m-rt = "0.6"
 nb = "1.0.0"
-panic-semihosting = "0.5.6"
-rtt-target = {version = "0.2.0", features = ["cortex-m"] }
