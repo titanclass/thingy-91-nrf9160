@@ -35,11 +35,11 @@ fn main() -> ! {
     let mut led_is_on = false;
     loop {
         if led_is_on {
+            rgb_pwm.set_duty_on_common(rgb_pwm.get_max_duty());
             writeln!(board.cdc_uart, "Off").unwrap();
-            rgb_pwm.set_duty_on_common(0);
         } else {
             writeln!(board.cdc_uart, "On").unwrap();
-            rgb_pwm.set_duty_on_common(rgb_pwm.get_max_duty());
+            rgb_pwm.set_duty_on_common(0);
         }
         timer.start(1_000_000_u32);
         block!(timer.wait()).unwrap();
