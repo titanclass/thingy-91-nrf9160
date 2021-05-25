@@ -69,32 +69,7 @@ GNU gdb (Ubuntu 9.2-0ubuntu1~20.04) 9.2
 Copyright (C) 2020 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-Type "show copying" and "show warranty" for details.
-This GDB was configured as "x86_64-linux-gnu".
-Type "show configuration" for configuration details.
-For bug reporting instructions, please see:
-<http://www.gnu.org/software/gdb/bugs/>.
-Find the GDB manual and other documentation resources online at:
-    <http://www.gnu.org/software/gdb/documentation/>.
-
-For help, type "help".
-Type "apropos word" to search for commands related to "word"...
-Reading symbols from ./target/thumbv8m.main-none-eabihf/debug/examples/blinky...
-(gdb) target extended-remote :2331
-Remote debugging using :2331
-0x00050aaa in nrf_hal_common::timer::Instance::timer_running (self=0x2003ff7c) at /home/jpallant/.cargo/git/checkouts/nrf-hal-eaee0cb5ab64b08f/a8dddf1/nrf-hal-common/src/timer.rs:398
-398         fn timer_running(&self) -> bool {
-(gdb) monitor halt
-(gdb) load
-Loading section .vector_table, size 0x144 lma 0x50000
-Loading section .text, size 0x4e4c lma 0x50144
-Loading section .rodata, size 0xae0 lma 0x54f90
-Start address 0x00050144, load size 23152
-Transfer rate: 11304 KB/sec, 5788 bytes/write.
-(gdb) break main
-Breakpoint 1 at 0x515f4: file examples/blinky.rs, line 24.
-(gdb) monitor reset
+...
 Resetting target
 (gdb) continue
 Continuing.
@@ -133,7 +108,7 @@ $ west flash
 ```
 
 Your nRF9160-DK will now have SPM installed between `0x0000_0000` and
-`0x0004_FFFF`. Flashing your application at `0x0005_0000` should not affect SPM,
+`0x0003_FFFF`. Flashing your application at `0x0004_0000` should not affect SPM,
 provided you do not select *erase entire chip* or somesuch!
 
 ## Licence
