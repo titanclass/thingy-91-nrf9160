@@ -12,8 +12,10 @@ version = "0.1.0"
 edition = "2018"
 resolver = "2"
 
+repository = "https://github.com/titanclass/thingy-91-nrf9160"
+
 [dependencies]
-nrf9160-hal = { git = "https://github.com/nrf-rs/nrf-hal", branch = "master" }
+nrf9160-hal = "0.12.2"
 
 [dev-dependencies]
 cortex-m = "0.7"
